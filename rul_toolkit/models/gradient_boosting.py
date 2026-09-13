@@ -1,53 +1,91 @@
-"""Gradient boosting models for RUL prediction."""
+"""Tree-based models for RUL prediction."""
 
 import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 
 try:
     import lightgbm as lgb
-    HAS_LIGHTGBM = True
+    LIGHTGBM_AVAILABLE = True
 except ImportError:
-    HAS_LIGHTGBM = False
+    LIGHTGBM_AVAILABLE = False
 
 
-class LightGBMRUL:
-    """LightGBM baseline – strong and fast on tabular data."""
+class RandomForestRUL:
+    """Random Forest regression model for RUL prediction."""
 
     def __init__(
         self,
-        n_estimators: int = 200,
-        learning_rate: float = 0.05,
-        max_depth: int = -1,
-        num_leaves: int = 31,
-        random_state: int = 42,
+        n_estimators=100,
+        max_depth=None,
+        random_state=42,
     ):
-        if not HAS_LIGHTGBM:
-            raise ImportError("lightgbm is not installed. Run: pip install lightgbm")
+        self.model = RandomForestRegressor(
+            n_estimators=n_estimators,
+            max_depth=max_depth,
+            random_state=random_state,
+            n_jobs=-1,
+        )
+        self.is_fitted = False
+
+    def fit(self, X, y):
+        X = np.asarray(X)
+        y = np.asarray(y).flatten()
+
+        if len(X) != len(y):
+            raise ValueError("X and y must have the same number of samples.")
+        if len(y) == 0:
+            raise ValueError("Cannot fit model on empty data.")
+
+        self.model.fit(X, y)
+        self.is_fitted = True
+        return self
+
+    def predict(self, X):
+        if not self.is_fitted:
+            raise ValueError("Model not fitted.")
+
+        return self.model.predict(np.asarray(X))
+
+
+class LightGBMRUL:
+    """LightGBM regression model for RUL prediction."""
+
+    def __init__(
+        self,
+        n_estimators=100,
+        learning_rate=0.05,
+        max_depth=-1,
+        random_state=42,
+    ):
+        if not LIGHTGBM_AVAILABLE:
+            raise ImportError(
+                "lightgbm is not installed. Run: pip install lightgbm"
+            )
 
         self.model = lgb.LGBMRegressor(
             n_estimators=n_estimators,
             learning_rate=learning_rate,
             max_depth=max_depth,
-            num_leaves=num_leaves,
             random_state=random_state,
-            n_jobs=-1,
-            verbose=-1,
+            verbosity=-1,
         )
         self.is_fitted = False
 
-    def fit(self, X: np.ndarray, y: np.ndarray):
+    def fit(self, X, y):
         X = np.asarray(X)
         y = np.asarray(y).flatten()
+
+        if len(X) != len(y):
+            raise ValueError("X and y must have the same number of samples.")
+        if len(y) == 0:
+            raise ValueError("Cannot fit model on empty data.")
+
         self.model.fit(X, y)
         self.is_fitted = True
         return self
 
-    def predict(self, X: np.ndarray) -> np.ndarray:
-        if not self.is_fitted:
-            raise ValueError("Model not fitted. Call fit() first.")
-        X = np.asarray(X)
-        return self.model.predict(X)
-
-    def feature_importance(self):
+    def predict(self, X):
         if not self.is_fitted:
             raise ValueError("Model not fitted.")
-        return self.model.feature_importances_.tolist()
+
+        return self.model.predict(np.asarray(X))
