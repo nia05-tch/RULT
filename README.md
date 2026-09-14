@@ -24,7 +24,7 @@ Remaining Useful Life evaluation toolkit for turbofan engines. Beyond-RMSE evalu
 
 ---
 
-## Phase 1: Core Evaluation Framework (✅ Complete)
+## Phase 1: Core Evaluation Framework 
 
 **Phase 1 Deliverables:**
 - Decision cost metrics (expected cost per prediction)
