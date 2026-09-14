@@ -305,7 +305,7 @@ pytest tests/ -v
 
 ---
 
-## How This Differs from Portfolio Work
+## Inspired by previous Portfolio Work
 
 **Portfolio Project:** Aircraft Engine Predictive Maintenance (Sep 2026)
 - Goal: Build a working predictive maintenance system
