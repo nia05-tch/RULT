@@ -2,7 +2,7 @@
 
 Remaining Useful Life evaluation toolkit for turbofan engines. Beyond-RMSE evaluation framework integrating decision cost, physics consistency, and uncertainty quantification across multiple ML approaches.
 
-**Status:** Phase 1 Complete (Core Evaluation Framework)  
+**Status:** Phase 1 Complete (Toolkit Implemented, Experiments Pending)  
 **Stage:** Ongoing Bachelor's Thesis Research (2026–2027)  
 **Institution:** Vrije Universiteit Amsterdam  
 **Dataset:** NASA N-CMAPSS (5.3M training samples, 9 engines, realistic flight conditions)  
@@ -22,7 +22,9 @@ This toolkit evaluates Remaining Useful Life predictions across multiple dimensi
 
 ## Phase 1 Implementation
 
-### Core Modules
+**Status:** Toolkit code complete. Models implemented but experiments pending.
+
+Phase 1 develops the evaluation framework and model implementations. Phase 2 will execute large-scale experiments comparing these models across datasets.
 
 **rul_toolkit/preprocessing/**
 - `loaders.py` - Load NASA C-MAPSS and N-CMAPSS datasets
@@ -116,11 +118,9 @@ tests/
 
 ## Thesis Contribution
 
-Phase 1 develops a unified evaluation framework revealing that lowest-RMSE models are often unsafe for operational use:
+Phase 1 develops a unified evaluation framework that will enable comparison across multiple evaluation dimensions. This toolkit enables rigorous assessment beyond standard ML metrics for safety-critical time-to-event prediction.
 
-**Key Finding:** LightGBM achieves lowest RMSE but highest decision cost and poor calibration. Physics-informed models sacrifice 5-10% RMSE for 100% monotonicity and excellent calibration—a critical trade-off for aerospace.
-
-**Methodology Impact:** Establishes evaluation criteria beyond standard ML metrics for safety-critical time-to-event prediction.
+Phase 2 experiments (pending) will compare 5 model types across decision cost, physics consistency, and uncertainty metrics on NASA N-CMAPSS dataset.
 
 ---
 
